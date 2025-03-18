@@ -286,7 +286,7 @@ ORDER BY rental_count DESC;
 |5          |ELIZABETH BROWN|1,444       |5,495.56   |3.81                |
 |459        |TOMMY COLLAZO  |1,444       |7,091.56   |4.91                |
 
-### **3️⃣ Developing a Recommendation System **
+### 3️⃣ Developing a Recommendation System 
 
 - We are providing 5 recommended films from each of the top three categories most rented by a customer, ensuring that these films have not been rented by the customer before.
 
@@ -304,7 +304,7 @@ WITH top_categories AS (
     WHERE r.customer_id = 1  
     GROUP BY c.name
     ORDER BY rental_count DESC
-    LIMIT 3  -- En çok kiralanan 3 kategori
+    LIMIT 3  
 ),
 -- Recommend 5 films from each category
 recommended_films AS (
@@ -327,7 +327,7 @@ recommended_films AS (
 -- 3. Filter the results and recommend only 5 films from each category.
 SELECT recommended_film, category
 FROM recommended_films
-WHERE row_num <= 5  -- Her kategoriden 5 film seç
+WHERE row_num <= 5  
 ORDER BY category, row_num;
 
 ```
@@ -352,7 +352,7 @@ ORDER BY category, row_num;
 |BRIGHT ENCOUNTERS  |Drama   |
 
 
-### **4️⃣ Creating Stored Procedure ve Trigger ** 
+### 4️⃣ Creating Stored Procedure ve Trigger 
 
 - We realized that we frequently need to learn the most popular category for many customers, so we are creating a **Stored Procedure** function specifically for this purpose
 
@@ -374,7 +374,7 @@ BEGIN
 END$$
 ```
 
-- Şimdi bu prosedürü 1 numralı müşteri için çağırıyoruz
+- We are calling the procedure for the Customer 1
   
 ```sql
 CALL GetMostPopularCategory(1);
@@ -414,7 +414,7 @@ DELIMITER ;
 ```
 
 
-- The End
+### The End
 
 
 
