@@ -176,7 +176,7 @@ ORDER BY
 |50         |DIANE COLLINS |169.65     |Eligible     |
 
 
-### **2️⃣ Film Popülerlik ve Kiralama Eğilimleri**  
+### 2️⃣ Film Popülerlik ve Kiralama Eğilimleri
 
 - We need to know which films or categories are more popular.
 - We are listing the most rented films by category.
