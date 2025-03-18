@@ -1,11 +1,16 @@
 ### **📌 Sakila Film Kiralama İçin  Raporlama ve Otomatik Öneri Sistemi **  
 
-<img src="https://user-images.githubusercontent.com/81607668/127727503-9d9e7a25-93cb-4f95-8bd0-20b87cb4b459.png" alt="Image" width="500" height="520">
+<img src="https://raw.githubusercontent.com/yunusgrgz1/Sakila/refs/heads/main/sakila.png" alt="Image" width="850" height="520">
 
 
 - Bu projede **MySQL** kullanarak veri analizi yapacak, gelişmiş sorgular ile **müşteri davranışlarını inceleyecek**, **performans optimizasyonları** gerçekleştirecek ve **otomatik öneri sistemi** geliştireceksin.
+- 
 
 ## **🔹 Proje Adımları**  
+- Kullanacağımız dataset Sakila dataset film kiralama hizmeti veren sözde bir şirketin açık kaynak bilgieriyle bu projeyi gerçekleştiriyoruz.
+
+<img src="https://raw.githubusercontent.com/yunusgrgz1/Sakila/refs/heads/main/sakila.png" alt="Image" width="850" height="520">
+
 
 ### **1️⃣ Müşteri Analizi ve Segmentasyonu** 
 - Bu senaryoda marketing ekibimiz en çok harcama yapan 10 müşteriyi belirleyerek onları preimum müşteriler kategorisine alarak onlara özel fırsatlar sunmak için bu müşterilerin listesini istedi.
