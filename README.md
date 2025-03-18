@@ -1,19 +1,19 @@
-### **📌 Sakila Film Kiralama İçin  Raporlama ve Otomatik Öneri Sistemi **  
+### 📌 Sakila Film Rental Reporting and Automated Recommendation System  
+
+<img src="https://raw.githubusercontent.com/yunusgrgz1/Sakila/refs/heads/main/films.jpg" alt="Image" width="850" height="520">
+
+
+- In this project, we will use **MySQL** to perform data analysis, examine **customer behavior** with advanced queries, conduct **performance optimizations**, and develop an **automated recommendation system**.
+
+
+## **🔹 The Project Steps**  
+- The dataset we will use is the **Sakila dataset**, which is open-source data representing a fictional movie rental company. We will carry out this project using this dataset.
 
 <img src="https://raw.githubusercontent.com/yunusgrgz1/Sakila/refs/heads/main/sakila.png" alt="Image" width="850" height="520">
 
 
-- Bu projede **MySQL** kullanarak veri analizi yapacak, gelişmiş sorgular ile **müşteri davranışlarını inceleyecek**, **performans optimizasyonları** gerçekleştirecek ve **otomatik öneri sistemi** geliştireceksin.
-- 
-
-## **🔹 Proje Adımları**  
-- Kullanacağımız dataset Sakila dataset film kiralama hizmeti veren sözde bir şirketin açık kaynak bilgieriyle bu projeyi gerçekleştiriyoruz.
-
-<img src="https://raw.githubusercontent.com/yunusgrgz1/Sakila/refs/heads/main/sakila.png" alt="Image" width="850" height="520">
-
-
-### **1️⃣ Müşteri Analizi ve Segmentasyonu** 
-- Bu senaryoda marketing ekibimiz en çok harcama yapan 10 müşteriyi belirleyerek onları preimum müşteriler kategorisine alarak onlara özel fırsatlar sunmak için bu müşterilerin listesini istedi.
+### **1️⃣ Customer Analysis and Segmentation ** 
+- In this scenario, our marketing team requested a list of the top 10 customers who have spent the most. These customers will be categorized as premium customers and offered exclusive opportunities.
 
 ```sql
 SELECT DISTINCT c.customer_id, c.first_name, c.last_name, SUM(p.amount) AS total_amount
@@ -23,6 +23,9 @@ GROUP BY c.customer_id, c.first_name, c.last_name
 order by total_amount desc
 LIMIT 10;
 ```
+
+- Answer
+  
 |customer_id|first_name|last_name|total_amount|
 |-----------|----------|---------|------------|
 |526        |KARL      |SEAL     |221.55      |
@@ -36,7 +39,7 @@ LIMIT 10;
 |236        |MARCIA    |DEAN     |175.58      |
 |181        |ANA       |BRADLEY  |174.66      |
 
-Satış ekibimiz müşterilerin ortalama altında mı yoksa üstünde mi satın alım yaptığını buna göre düşük alışveriş yapan müşterilere mail ve sms aracılığıyla erişmek için bu kişilerin bilgilerini istemektedir
+- Our sales team need the information of customers who are either below or above average in terms of spending. They need this data to reach out to the low-spending customers via email and SMS.
 
 ```sql
 WITH customer_spending AS (
@@ -52,23 +55,24 @@ average_spending AS (
     SELECT AVG(total_spent) AS overall_avg_spent FROM customer_spending
 )
 select distinct
-    CONCAT(c.first_name, ' ', c.last_name) AS customer_name,  -- Müşteri ismi birleştirildi
+    CONCAT(c.first_name, ' ', c.last_name) AS customer_name,  
     cs.customer_id, 
     cs.total_spent,
     cs.avg_spent,
     c.email,   -- Müşteri e-postası
     ad.phone,  -- Müşteri telefon numarası
-    (SELECT overall_avg_spent FROM average_spending) AS overall_avg_spent, -- Genel ortalama harcama
+    (SELECT overall_avg_spent FROM average_spending) AS overall_avg_spent, 
     CASE
         WHEN cs.avg_spent > (SELECT overall_avg_spent FROM average_spending) THEN 'Above'
         WHEN cs.avg_spent < (SELECT overall_avg_spent FROM average_spending) THEN 'Below'
         ELSE 'Average'
     END AS spending_category
 FROM customer_spending cs
-JOIN customer c ON cs.customer_id = c.customer_id  -- customer tablosu ile JOIN
-JOIN address ad ON c.address_id = ad.address_id  -- address tablosu ile JOIN
-JOIN payment p ON cs.customer_id = p.customer_id;  -- payment tablosu ile JOIN
+JOIN customer c ON cs.customer_id = c.customer_id  
+JOIN address ad ON c.address_id = ad.address_id 
+JOIN payment p ON cs.customer_id = p.customer_id;  
 ```
+- Answer
 
 |customer_name   |customer_id|total_spent|avg_spent|email                              |phone       |overall_avg_spent|spending_category|
 |----------------|-----------|-----------|---------|-----------------------------------|------------|-----------------|-----------------|
@@ -84,7 +88,7 @@ JOIN payment p ON cs.customer_id = p.customer_id;  -- payment tablosu ile JOIN
 |WANDA PATTERSON |87         |145.7      |4.856667 |WANDA.PATTERSON@sakilacustomer.org |198123170793|112.53182        |Below            |
 |BONNIE HUGHES   |88         |87.79      |4.180476 |BONNIE.HUGHES@sakilacustomer.org   |978987363654|112.53182        |Below            |
 
-- Son 6 ayda en aktif müşterileri harcamalarına göre sıralamak istiyoruz.
+- We want to rank the most active customers in the last 6 months based on their spending..
 
 ```sql
 SELECT 
@@ -98,6 +102,7 @@ WHERE p.payment_date > '2005-06-01'
 GROUP BY p.customer_id
 ORDER BY total_spent desc
 ```
+- Answer
 
 |customer_id|customer_name |total_spent|
 |-----------|--------------|-----------|
@@ -112,7 +117,7 @@ ORDER BY total_spent desc
 |236        |MARCIA DEAN   |166.61     |
 |403        |MIKE WAY      |162.67     |
 
-- Satış Müdürümüz en çok satış yapan elemanı bilmek ve onu ayın elemanı ilan etmek istiyor.
+- Our Sales Manager needs to identify the employee with the highest sales and declare them Employee of the Month.
 
 ```sql
 select s.staff_id, concat (s.first_name, ' ', s.last_name), sum(p.amount) as total_sales
@@ -122,13 +127,14 @@ group by s.staff_id
 order by total_sales desc
 limit 1;
 ```
+- Answer
 
 |staff_id|concat (s.first_name, ' ', s.last_name)|total_sales|
 |--------|---------------------------------------|-----------|
 |2       |Jon Stephens                           |33,924.06  |
 
 
-- Pazarlama ekibimiz daha önce yapılan 150 $ dan fazla alışverişe 30 $ hediye çeki kampanyasında hangi müşterilerin eligible olduğunu bir liste olarak almak istiyor.
+- Our marketing team needs to obtain a list of customers who are eligible for the $30 gift card campaign for purchases over $150.
 
 ```sql
 SELECT 
@@ -152,6 +158,7 @@ HAVING
 ORDER BY 
     total_spent DESC;
 ```
+- Answer
 
 |customer_id|customer_name |total_spent|reward_status|
 |-----------|--------------|-----------|-------------|
@@ -171,8 +178,8 @@ ORDER BY
 
 ### **2️⃣ Film Popülerlik ve Kiralama Eğilimleri**  
 
-- Hangi filmlerin ya da kategorilerin daha popüler olduğunu bilmeye ihtiyacımız var.
-- En çok kiralanan filmleri kategori bazlı listeliyoruz.
+- We need to know which films or categories are more popular.
+- We are listing the most rented films by category.
 
 ```sql
 select f.film_id, f.title as film_name, c.name as category, count(r.inventory_id) as number_of_rentals
@@ -188,6 +195,7 @@ on i.inventory_id = r.inventory_id
 group by f.title , f.film_id, c.name
 order by  number_of_rentals desc
 ```
+- Answer
 
 |film_id|film_name          |category   |number_of_rentals|
 |-------|-------------------|-----------|-----------------|
@@ -218,8 +226,10 @@ JOIN category c ON fc.category_id = c.category_id
 GROUP BY c.name
 ORDER BY rental_count DESC;
 ```
+- Answer
 
-En popüler film türlerini analiz ediyoruz
+- We are analyzing the most popular film genres.
+  
 |category   |rental_count|
 |-----------|------------|
 |Sports     |1,179       |
@@ -240,8 +250,8 @@ En popüler film türlerini analiz ediyoruz
 |Music      |830         |
 
 
-- Müşterilerin kiralama sıklığı, harcama alışkanlıklarıyla ilişkili mi?
-- Daha sık kiralama yapan müşteriler daha fazla mı harcıyor? Yoksa az kiralayanlar da yüksek meblağlarda ödeme yapıyor mu?
+- Is there a correlation between customers' rental frequency and their spending habits?
+- Do customers who rent more frequently also spend more, or do customers who rent less still make high-value payments?
 
 
 ```sql
@@ -257,6 +267,7 @@ JOIN payment p ON c.customer_id = p.customer_id
 GROUP BY c.customer_id, customer_name
 ORDER BY rental_count DESC;  
 ```
+- Answer
 
 |customer_id|customer_name  |rental_count|total_spent|avg_spent_per_rental|
 |-----------|---------------|------------|-----------|--------------------|
@@ -273,13 +284,13 @@ ORDER BY rental_count DESC;
 |5          |ELIZABETH BROWN|1,444       |5,495.56   |3.81                |
 |459        |TOMMY COLLAZO  |1,444       |7,091.56   |4.91                |
 
-### **3️⃣ Öneri Sistemi Geliştirme**
+### **3️⃣ Developing a Recommendation System **
 
-- Bir müşterinin en çok kiraladığı üç kategoriye göre, o kategorilerde daha önce kiralanmamış ve her kategoriden 5 önerilen film sunuyoruz.
+- We are providing 5 recommended films from each of the top three categories most rented by a customer, ensuring that these films have not been rented by the customer before.
 
 ```sql
 WITH top_categories AS (
-    -- Müşterinin en çok kiraladığı 3 kategori
+    -- The 3 categories most rented by the customer
     SELECT 
         c.name AS category,
         COUNT(r.rental_id) AS rental_count
@@ -288,17 +299,17 @@ WITH top_categories AS (
     JOIN film f ON i.film_id = f.film_id
     JOIN film_category fc ON f.film_id = fc.film_id
     JOIN category c ON fc.category_id = c.category_id
-    WHERE r.customer_id = 1  -- Örneğin, müşteri 1'in kiralamalarını al
+    WHERE r.customer_id = 1  
     GROUP BY c.name
     ORDER BY rental_count DESC
     LIMIT 3  -- En çok kiralanan 3 kategori
 ),
--- 2. Her kategoriden 5 film öner
+-- Recommend 5 films from each category
 recommended_films AS (
     SELECT 
         f.title AS recommended_film,
         c.name AS category,
-        ROW_NUMBER() OVER (PARTITION BY c.name ORDER BY f.title) AS row_num  -- Her kategori için sıralama
+        ROW_NUMBER() OVER (PARTITION BY c.name ORDER BY f.title) AS row_num  -- Sorting for each category
     FROM film f
     JOIN film_category fc ON f.film_id = fc.film_id
     JOIN category c ON fc.category_id = c.category_id
@@ -308,22 +319,17 @@ recommended_films AS (
         FROM rental r
         JOIN inventory i ON r.inventory_id = i.inventory_id
         JOIN film f ON i.film_id = f.film_id
-        WHERE r.customer_id = 1  -- Müşteri 1'in daha önce kiraladığı filmleri hariç tut
+        WHERE r.customer_id = 1  -- Exclude the films that Customer 1 has previously rented.
     )
 )
--- 3. Sonuçları filtreleyerek her kategoriden sadece 5 film öner
+-- 3. Filter the results and recommend only 5 films from each category.
 SELECT recommended_film, category
 FROM recommended_films
 WHERE row_num <= 5  -- Her kategoriden 5 film seç
 ORDER BY category, row_num;
 
-
--- 3. Sonuçları filtreleyerek her kategoriden sadece 5 film öner
-SELECT recommended_film, category
-FROM recommended_films
-WHERE row_num <= 5  -- Her kategoriden 5 film seç
-ORDER BY category, row_num;
 ```
+- Answer
 
 |recommended_film   |category|
 |-------------------|--------|
@@ -344,9 +350,9 @@ ORDER BY category, row_num;
 |BRIGHT ENCOUNTERS  |Drama   |
 
 
-### **4️⃣ Stored Procedure ve Trigger Oluşturma** 
+### **4️⃣ Creating Stored Procedure ve Trigger ** 
 
-- Birçok müşteri için sıklıkla en popüler kategoriyi öğrenmeye ihtiyacımız olduğunu fark ettik bu sebeple buna özel **Stored Procedure** fonksiyonu oluşturuyoruz.
+- We realized that we frequently need to learn the most popular category for many customers, so we are creating a **Stored Procedure** function specifically for this purpose
 
 ```sql
 DELIMITER $$
@@ -371,11 +377,13 @@ END$$
 ```sql
 CALL GetMostPopularCategory(1);
 ```
+- Answer
+
 |category|
 |--------|
 |Classics|
 
-- Her müşteri yıllık maksimum 10 film kiralayabilir bu sebeple bir trigger oluşturup bu sınırı aşan müşterileri tespit etmek istiyoruz
+- Each customer can rent a maximum of 10 films per year, so we want to create a trigger to detect customers who exceed this limit.
 
 ```sql
 DELIMITER $$
@@ -385,15 +393,15 @@ AFTER INSERT ON rental
 FOR EACH ROW
 BEGIN
     DECLARE rental_count INT;
-    DECLARE rental_limit INT DEFAULT 10; -- Kiralama limiti
+    DECLARE rental_limit INT DEFAULT 10; -- Limit
 
-    -- Kullanıcının belirli bir tarih aralığında yaptığı kiralamaları sayıyoruz
+    -- We count the rentals made by the user within a specific date range.
     SELECT COUNT(*) INTO rental_count
     FROM rental
     WHERE customer_id = NEW.customer_id
-      AND rental_date BETWEEN '2025-01-01' AND '2025-12-31'; -- 2025 yılı için örnek tarih aralığı
+      AND rental_date BETWEEN '2025-01-01' AND '2025-12-31'; -- Example date range for the year 2005. 
 
-    -- Eğer kiralama sayısı limitin üstündeyse, rental_history tablosuna kayıt ekliyoruz
+    -- If the rental count exceeds the limit, we add a record to the rental_history table.
     IF rental_count > rental_limit THEN
         INSERT INTO rental_history (customer_id, rental_id, message)
         VALUES (NEW.customer_id, NEW.rental_id, 'Rental limit exceeded!');
@@ -404,7 +412,7 @@ DELIMITER ;
 ```
 
 
-
+- The End
 
 
 
