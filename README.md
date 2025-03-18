@@ -3,7 +3,7 @@
 <img src="https://raw.githubusercontent.com/yunusgrgz1/Sakila/refs/heads/main/films.jpg" alt="Image" width="850" height="520">
 
 
-- In this project, we will use **MySQL** to perform data analysis, examine **customer behavior** with advanced queries, conduct **performance optimizations**, and develop an **automated recommendation system**.
+- In this project, we will use **MySQL** to perform data analysis, examine **customer behavior** with advanced queries, and develop an **automated recommendation system**.
 
 
 ## 🔹 The Project Steps 
