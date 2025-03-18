@@ -6,7 +6,7 @@
 - In this project, we will use **MySQL** to perform data analysis, examine **customer behavior** with advanced queries, conduct **performance optimizations**, and develop an **automated recommendation system**.
 
 
-## **🔹 The Project Steps**  
+## 🔹 The Project Steps 
 - The dataset we will use is the **Sakila dataset**, which is open-source data representing a fictional movie rental company. We will carry out this project using this dataset.
 
 <img src="https://raw.githubusercontent.com/yunusgrgz1/Sakila/refs/heads/main/sakila.png" alt="Image" width="850" height="520">
