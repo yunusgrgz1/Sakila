@@ -59,8 +59,8 @@ select distinct
     cs.customer_id, 
     cs.total_spent,
     cs.avg_spent,
-    c.email,   -- Müşteri e-postası
-    ad.phone,  -- Müşteri telefon numarası
+    c.email,   
+    ad.phone,  
     (SELECT overall_avg_spent FROM average_spending) AS overall_avg_spent, 
     CASE
         WHEN cs.avg_spent > (SELECT overall_avg_spent FROM average_spending) THEN 'Above'
@@ -176,7 +176,9 @@ ORDER BY
 |50         |DIANE COLLINS |169.65     |Eligible     |
 
 
-### 2️⃣ Film Popülerlik ve Kiralama Eğilimleri
+### 2️⃣ Film Popularity and Rental Trends
+
+
 
 - We need to know which films or categories are more popular.
 - We are listing the most rented films by category.
