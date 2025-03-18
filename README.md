@@ -213,6 +213,8 @@ order by  number_of_rentals desc
 |753    |RUSH GOODFELLAS    |Family     |31               |
 
 
+- We are analyzing the most popular film genres.
+  
 ```sql
 
 SELECT 
@@ -228,7 +230,7 @@ ORDER BY rental_count DESC;
 ```
 - Answer
 
-- We are analyzing the most popular film genres.
+
   
 |category   |rental_count|
 |-----------|------------|
