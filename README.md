@@ -12,7 +12,7 @@
 <img src="https://raw.githubusercontent.com/yunusgrgz1/Sakila/refs/heads/main/sakila.png" alt="Image" width="850" height="520">
 
 
-### **1️⃣ Customer Analysis and Segmentation ** 
+### 1️⃣ Customer Analysis and Segmentation 
 - In this scenario, our marketing team requested a list of the top 10 customers who have spent the most. These customers will be categorized as premium customers and offered exclusive opportunities.
 
 ```sql
